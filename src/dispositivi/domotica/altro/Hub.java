@@ -40,7 +40,7 @@ public class Hub extends Dispositivo {
         }
     }
 
-    public void riceviEvento(Sensore sensore, String stato) {
+    public void riceviEvento(Sensore sensore, boolean stato) {
         //cerco l'eventuale Attuatore collegato a questo Sensore tramite ID nella lista dei collementi
         Attuatore attuatore = collegamenti.get(sensore.getID());
         if (attuatore==null) { System.err.println("Nessun attuatore collegato");}
@@ -49,9 +49,8 @@ public class Hub extends Dispositivo {
                 System.err.println("Pulsante premuto!");
                 attuatore.cambiaStato();
             } else if (sensore instanceof Interruttore) {
-                Interruttore interruttore = (Interruttore) sensore;
-                boolean stato = interruttore.isStato();
-                System.err.println("Interruttore " + (stato ? "acceso" : "spento"));
+                attuatore.setStato(stato);
+                System.err.println("Interruttore " + (interruttore.isStato() ? "acceso" : "spento"));
             }
         }
     }

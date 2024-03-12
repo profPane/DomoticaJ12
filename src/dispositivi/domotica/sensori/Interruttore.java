@@ -11,7 +11,7 @@ public class Interruttore extends Sensore {
     public void premi() {
         stato = !stato;
         if (super.getHub() != null) {
-            super.getHub().riceviEvento(this,);
+            super.getHub().riceviEvento(this,this.stato);
         }
     }
 

@@ -9,6 +9,10 @@ public class LampDim extends Lamp {
         this.lux = 0;
     }
 
+    public void setStato(boolean stato){
+        lux = (stato)?100:0;
+    }
+
     public void impostaLux(int lux) {
         if (lux == 0) {
             settaStato(false);

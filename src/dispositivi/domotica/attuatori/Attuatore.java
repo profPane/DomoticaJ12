@@ -26,6 +26,11 @@ public class Attuatore extends Dispositivo {
         //a seconda della loro logica di funzionamento
     }
 
+    public void setStato(boolean stato){
+        //segnaposto per cambiaStato da implementare nei singoli Dispositivi 
+        //a seconda della loro logica di funzionamento
+    }
+
     @Override
     public String toString() {
         String stato = "Non associato";

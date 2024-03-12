@@ -14,7 +14,7 @@ public class Pulsante extends Sensore {
 
     public void premi() {
         if (super.getHub() != null) {
-            (super.getHub()).riceviEvento(this, null);
+            (super.getHub()).riceviEvento(this, true);
         }
     }
 }
