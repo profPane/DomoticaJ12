@@ -1,5 +1,6 @@
 package dispositivi.domotica.altro;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import dispositivi.Dispositivo;
@@ -10,17 +11,20 @@ public class Hub extends Dispositivo {
 
     private HashMap<Integer, Dispositivo> dispositivi;
     private HashMap<Integer, Attuatore> collegamenti;
+    private ArrayList<Class> dispConosciuti;
     private int progressivoID; //id contiene l'ultimo ID assegnato
 
     public Hub(String sn, String marca, String modello) {
         super(sn, marca, modello, -1);
         this.dispositivi = new HashMap<>();
         this.collegamenti = new HashMap<>();
+        this.dispConosciuti = new ArrayList<>();
         progressivoID=-1;
     }
 
     public int associa(Dispositivo dispositivo) {
         dispositivi.put((++progressivoID), dispositivo);
+        dispConosciuti.add(dispositivo.getClass());
         return progressivoID;
     }
 
@@ -48,6 +52,7 @@ public class Hub extends Dispositivo {
     public String evento(Sensore sensore, String comando) {
         //cerco l'eventuale Attuatore collegato a questo Sensore tramite ID nella lista dei collementi
         Attuatore attuatore = collegamenti.get(sensore.getID());
+
         if (attuatore==null) { 
             System.err.println("HUBLOG: Nessun attuatore collegato a "+sensore );
         }

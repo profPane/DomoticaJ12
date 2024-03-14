@@ -34,8 +34,11 @@ public class App {
         // Simulazione di pressione del pulsante
         pulsante1.premi();
         // L'interruttore cambia stato
-        interruttore1.evento("50");
+        interruttore1.evento("ON");
         
+        
+        lampDim1.comando("50");
+
         // Stampa informazioni sui dispositivi
         System.out.println(hub);
     }

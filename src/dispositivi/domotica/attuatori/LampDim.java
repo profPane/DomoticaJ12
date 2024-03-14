@@ -12,10 +12,18 @@ public class LampDim extends Lamp {
     }
 
     //oltre agli stati, gestiti da super, potrei aver passato una luminosita espressa in lux o una %, es "105lux", "91%"
-    public String comando(String stato){
+    public String comando(String comando){
         //to do: controllo se stato contiene il tag lux o % altrimenti passo il comando a super
-        String ris = super.comando(stato);
+        String ris = super.comando(comando);
         if (!ris.equals("FAIL")) return ris;
+        else {
+            int posStato = Arrays.binarySearch(this.stati, comando); //lo cerco tra i possibili
+            if (posStato!=-1) { //se c'è lo imposto
+                this.stato=posStato;
+                System.err.println("LAMPLOG: "+this.id+" ==> "+this.stato());
+                return this.stati[this.stato];
+            }   
+        }
         return "FAIL"; //se non riesco a gestirlo restituisco fallimento
     }
 
@@ -66,6 +74,6 @@ public class LampDim extends Lamp {
 
     @Override
     public String toString() {
-        return super.toString()+ " - Luminosità attuale: " + stato;
+        return super.toString()+ " - Luminosità attuale: " + this.stati[stato];
     }
 }
