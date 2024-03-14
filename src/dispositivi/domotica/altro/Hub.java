@@ -24,11 +24,13 @@ public class Hub extends Dispositivo {
         return progressivoID;
     }
 
-    public void collega(int idSensore, int idAttuatore){
+    public String collega(int idSensore, int idAttuatore){
         Dispositivo dispositivo = dispositivi.get(idAttuatore);
         if (dispositivo instanceof Attuatore){ //è un attuatore
                 collegamenti.put(idSensore, (Attuatore) dispositivo);
+                return "OK";
         } 
+        return "FAIL";
     }
     
     public String collegamenti(){
@@ -43,7 +45,7 @@ public class Hub extends Dispositivo {
         return collegati.toString();
     }
 
-    public void evento(Sensore sensore, String comando) {
+    public String evento(Sensore sensore, String comando) {
         //cerco l'eventuale Attuatore collegato a questo Sensore tramite ID nella lista dei collementi
         Attuatore attuatore = collegamenti.get(sensore.getID());
         if (attuatore==null) { 
@@ -51,28 +53,28 @@ public class Hub extends Dispositivo {
         }
         else { //c'è un attuatore collegato
             String response="FAIL";
-            if (comando.equals("PUSH")) { 
-                //se è un pulsate uso cambiaStato() dell'attuatore se presente
+            if (comando.equals("PUSH")) { //se è un pulsate uso cambiaStato()
                 response = attuatore.cambiaStato();
-                System.err.println("HUBLOG: Pulsante premuto!"+attuatore.cambiaStato());
             } else { //prende il comando ricevuto e lo inoltra all'attuatore
                 response = attuatore.comando(comando);
-                System.err.println("HUBLOG: Risultato evento su "+ sensore +"\n"+response);
             }
-            System.err.println("HUBLOG: Risultato evento su "+ sensore +"\n"+response);
+            System.err.println("HUBLOG: Evento su "+sensore+" Comando: "+comando );
+            System.err.println("HUBLOG: Risultato evento su "+response);
+            return response;
         }
+        return "FAIL";
     }
 
-    public String getListaDispositiviCollegati() {
+    public String listaDispositivi(Class tipo) {
         StringBuilder sb = new StringBuilder();
         for (Dispositivo dispositivo : dispositivi.values()) {
-            sb.append(dispositivo.toString()).append("\n");
+           if (tipo.isInstance(dispositivo)) sb.append(dispositivo.toString()).append("\n");
         }
         return sb.toString();
     }
 
     @Override
     public String toString() {
-        return "Informazioni sull'HUB: " +this.getSn()+ "\nDispositivi associati:\n" + getListaDispositiviCollegati();
+        return "Informazioni sull'HUB: " +this.getSn()+ "\nDispositivi associati:\n" + listaDispositivi(Dispositivo.class);
     }
 }

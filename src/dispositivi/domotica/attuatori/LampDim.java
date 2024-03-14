@@ -1,5 +1,7 @@
 package dispositivi.domotica.attuatori;
 
+import java.util.Arrays;
+
 //la lampada dimmerabile può essere OFF = 0 altrimenti ON con 10 possibili livelli di luminosità
 public class LampDim extends Lamp {
     //overriding dell'attributo stati, che contiene gli stati possibili
@@ -38,6 +40,19 @@ public class LampDim extends Lamp {
         if (stato==100) stato=0;
         else stato = (stato + 10);
         return this.stato();
+    }
+
+    public String evento(String comando) { //simula l'uso del Sensore
+        /* 
+        int posStato = Arrays.binarySearch(stati, comando); //lo cerco tra i possibili
+        if (posStato!=-1) { //se c'è lo imposto
+            this.stato=posStato;
+            if (hub != null) return hub.evento(this, stati[this.stato]);;
+        }   
+        */
+        //to do: controllo se stato contiene un numero tra 0 e 1 in stato e lo uso come stato
+        super.comando(comando);
+        return "FAIL"; //se non riesco a gestirlo restituisco fallimento
     }
 
     protected String stato(){

@@ -1,5 +1,7 @@
 package dispositivi.domotica.sensori;
 
+import java.util.Arrays;
+
 public class Interruttore extends Sensore {
 
     //attributi
@@ -14,13 +16,14 @@ public class Interruttore extends Sensore {
         return stati[stato]; 
     }
 
-    public void usa() { //simula l'uso del Sensore
-        stato = (stato+1)%stati.length;
-        if (hub != null) hub.evento(this, stato());
-    }
-
-    public void usa(String stato){
-        
+    public String evento(String comando) { //simula l'uso del Sensore
+        int posStato = Arrays.binarySearch(stati, comando); //lo cerco tra i possibili
+        if (posStato!=-1) { //se c'è lo imposto
+            this.stato=posStato;
+            if (hub != null) return hub.evento(this, stati[this.stato]);;
+        }   
+        //to do: controllo se stato contiene un numero tra 0 e 1 in stato e lo uso come stato
+        return "FAIL"; //se non riesco a gestirlo restituisco fallimento
     }
 
     @Override

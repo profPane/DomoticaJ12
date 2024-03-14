@@ -1,5 +1,6 @@
 import dispositivi.domotica.altro.Hub;
 import dispositivi.domotica.attuatori.LampDim;
+import dispositivi.domotica.attuatori.Attuatore;
 import dispositivi.domotica.attuatori.Lamp;
 import dispositivi.domotica.sensori.Interruttore;
 import dispositivi.domotica.sensori.Pulsante;
@@ -28,10 +29,12 @@ public class App {
 
         System.out.println(hub.collegamenti());
 
+        System.err.println("LOG: Lista attuatori \n"+hub.listaDispositivi(Attuatore.class));
+
         // Simulazione di pressione del pulsante
         pulsante1.premi();
         // L'interruttore cambia stato
-        interruttore1.evento("ON");
+        interruttore1.evento("50");
         
         // Stampa informazioni sui dispositivi
         System.out.println(hub);
