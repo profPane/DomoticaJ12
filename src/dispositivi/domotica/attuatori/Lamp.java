@@ -1,32 +1,19 @@
 package dispositivi.domotica.attuatori;
+
 public class Lamp extends Attuatore {
 
-    private boolean stato;
+    //attributi
+    private String stati[] = {"OFF", "ON"}; //stati possibili
+    private int lux; //luminosita massima espressa in lux
 
-    public Lamp(String sn, String marca, String modello, int carica) {
-        super(sn, marca, modello, carica);
-        this.stato = false;
-    }
-
-    public void cambiaStato() {
-        stato = !stato;
-    }
-
-    public void settaStato(boolean stato) {
-        this.stato = stato;
-    }
-
-    public boolean isStato() {
-        return stato;
-    }
-
-    protected String stato(){
-        return (!this.stato)?"ON":"OFF";
+    public Lamp(String sn, String marca, String modello, int carica, int lux) {
+        super(sn, marca, modello,  carica);
+        this.lux = lux;
+        this.stato = 0;
     }
 
     @Override
     public String toString() {
-        return super.toString()+" - ID: "+this.getID()+" - Stato: " + this.stato();
+        return super.toString()+" - Stato: " + this.stati[this.stato];
     }
-
 }

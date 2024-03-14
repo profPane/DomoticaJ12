@@ -1,27 +1,30 @@
 package dispositivi.domotica.sensori;
 
 public class Interruttore extends Sensore {
-    private boolean stato;
 
-    public Interruttore(String sn, String marca, String modello, int caricaMassima) {
-        super(sn, marca, modello, caricaMassima);
-        this.stato = false;
+    //attributi
+    public String stati[] = {"OFF", "ON"}; //stati possibili
+    
+    public Interruttore(String sn, String marca, String modello, int carica) {
+        super(sn, marca, modello, carica);
+        this.stato = 0;
     }
 
-    public void premi() {
-        stato = !stato;
-        if (super.getHub() != null) {
-            super.getHub().riceviEvento(this,this.stato);
-        }
+    public String stato(){ 
+        return stati[stato]; 
     }
 
-    public boolean isStato() {
-        return stato;
+    public void usa() { //simula l'uso del Sensore
+        stato = (stato+1)%stati.length;
+        if (hub != null) hub.evento(this, stato());
+    }
+
+    public void usa(String stato){
+        
     }
 
     @Override
     public String toString() {
-        String stato = (!this.stato)?"ON":"OFF";
-        return super.toString()+" - " + stato;
+        return super.toString()+" - " + this.stati[stato];
     }
 }

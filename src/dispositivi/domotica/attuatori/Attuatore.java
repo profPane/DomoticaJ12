@@ -1,42 +1,38 @@
 package dispositivi.domotica.attuatori;
 
+import java.util.Arrays;
+
 import dispositivi.Dispositivo;
-import dispositivi.domotica.altro.Hub;
 
 public class Attuatore extends Dispositivo {
-
-    private int id; //id assegnato
-    private Hub hub; //riferimento all'HUB
-
-    public Attuatore(String sn, String marca, String modello, int caricaMassima) {
-        super(sn, marca, modello, caricaMassima);
+    
+    public Attuatore(String sn, String marca, String modello, int carica) {
+        super(sn, marca, modello, carica);
     }
 
-    public void associa(Hub hub) {
-        this.id = hub.associa(this);
-        this.hub = hub;
+    public String cambiaStato() { //passo al prossimo stato
+        stato = (stato++)%stati.length; 
+        return this.stato();
     }
 
-    public int getID() {
-        return this.id;
+    public String comando(Object comando){ //riceve il comando qualsiasi tipo sia
+        //se finisco qui vuol dire che il tipo comando non è gestito dall'attuatore 
+        return "FAIL";  //se non riesco a gestirlo restituisco fallimento
     }
 
-    public void cambiaStato(){
-        //segnaposto per cambiaStato da implementare nei singoli Dispositivi 
-        //a seconda della loro logica di funzionamento
+    protected String stato(){
+        return this.stati[this.stato];
     }
 
-    public void setStato(boolean stato){
-        //segnaposto per cambiaStato da implementare nei singoli Dispositivi 
-        //a seconda della loro logica di funzionamento
+    public String comando(String comando){ //riceve il comando se è una Stringa 
+        int posStato = Arrays.binarySearch(stati, comando); //lo cerco tra i possibili
+        if (posStato!=-1) { //se c'è lo imposto
+            this.stato=posStato;
+            return this.stato();
+        }   
+        //to do: controllo se stato contiene un numero tra 0 e 1 in stato e lo uso come stato
+        return "FAIL"; //se non riesco a gestirlo restituisco fallimento
     }
 
-    @Override
-    public String toString() {
-        String stato = "Non associato";
-        if (hub != null) {
-            stato = "Associato a " + hub.getSn();
-        }
-        return super.toString() + " - " +stato;
-    }
+
 }

@@ -1,47 +1,56 @@
 package dispositivi.domotica.attuatori;
 
+//la lampada dimmerabile può essere OFF = 0 altrimenti ON con 10 possibili livelli di luminosità
 public class LampDim extends Lamp {
+    //overriding dell'attributo stati, che contiene gli stati possibili
+    private String stati[] = {"OFF","10","20","30","40","50","60","70","80","90","100"}; //stati possibili
 
-    private int lux;
-
-    public LampDim(String sn, String marca, String modello, int caricaMassima) {
-        super(sn, marca, modello, caricaMassima);
-        this.lux = 0;
+    public LampDim(String sn, String marca, String modello, int caricaMassima, int maxLux  ) {
+        super(sn, marca, modello, caricaMassima, maxLux);
     }
 
-    public void setStato(boolean stato){
-        lux = (stato)?100:0;
+    //oltre agli stati, gestiti da super, potrei aver passato una luminosita espressa in lux o una %, es "105lux", "91%"
+    public String comando(String stato){
+        //to do: controllo se stato contiene il tag lux o % altrimenti passo il comando a super
+        String ris = super.comando(stato);
+        if (!ris.equals("FAIL")) return ris;
+        return "FAIL"; //se non riesco a gestirlo restituisco fallimento
     }
 
-    public void impostaLux(int lux) {
-        if (lux == 0) {
-            settaStato(false);
-        } else {
-            settaStato(true);
-            this.lux = lux;
-        }
+    //oltre agli stati, gestiti da super, potrei aver passato una percentuale espressa come intero tra 0 e 100
+    public String comando(int stato){ 
+        //to do: controllo se stato contiene un numero intero tra 0 e 100 e chiamo super.setStato()
+        return "FAIL"; //se non riesco a gestirlo restituisco fallimento
     }
 
-    public int getLux() {
-        return lux;
+    //oltre agli stati, gestiti da super, potrei aver passato una percentuale espressa come reale tra 0 e 1 (100%)
+    public String comando(double stato){ 
+        //to do: controllo se stato contiene un numero reale tra 0.0 e 1.0, lo proporziono a 100 e lo cerco sta gli stati possibili
+        return "FAIL"; //se non riesco a gestirlo restituisco fallimento
+    }
+
+    public int getdimmer() {
+        return stato;
     }
 
     //se cambio lo stato di una dimmerabile agisco di +10 sulla luminosità
-    //dopo 100 c'è 0 cioè off
-    public void cambiaStato() {
-        if (lux==100) lux=0;
-        else lux = lux+10;
+    public String cambiaStato() {
+        if (stato==100) stato=0;
+        else stato = (stato + 10);
+        return this.stato();
     }
 
     protected String stato(){
-        System.err.println("\nLux: "+this.lux);
-        return (this.lux>0)?"ON":"OFF";
+        return (this.stato>0)?"ON":"OFF";
+    }
+
+    protected String lux(){
+        //todo: restituire gli attuali lux emessi rapportati a maxLux
+        return "FAIL"; //se non riesco a gestirlo restituisco fallimento
     }
 
     @Override
     public String toString() {
-
-        return super.toString()+ " - Luminosità attuale: " + lux;
+        return super.toString()+ " - Luminosità attuale: " + stato;
     }
-
 }

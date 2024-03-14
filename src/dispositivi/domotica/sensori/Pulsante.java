@@ -1,20 +1,14 @@
 package dispositivi.domotica.sensori;
 
-import dispositivi.domotica.altro.Hub;
-
 public class Pulsante extends Sensore {
-
-    public Pulsante(String sn, String marca, String modello, int caricaMassima) {
-        super(sn, marca, modello, caricaMassima);
+    //attributi
+    public Pulsante(String sn, String marca, String modello, int carica) {
+        super(sn, marca, modello, carica);
     }
 
-    public void associa(Hub hub) {
-        super.setHub(hub);
-    }
+    public void premi() { this.usa(); }
 
-    public void premi() {
-        if (super.getHub() != null) {
-            (super.getHub()).riceviEvento(this, true);
-        }
+    public void usa() { 
+        if (hub != null) hub.evento(this,"PUSH"); 
     }
 }
