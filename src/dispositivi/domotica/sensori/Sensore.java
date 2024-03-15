@@ -8,8 +8,8 @@ public class Sensore extends Dispositivo {
         super(sn, marca, modello, carica);
     }
 
-    public String evento(Object stato){ 
-        //segnaposto per la gestione dell'evento diversa per ogni sensore
+    public String event(Object evento){ //di qualsiati tipo sia il comando
+        //segnaposto per la gestione dell'evento che è diversa per ogni sensore
         return "FAIL"; 
     }
 }

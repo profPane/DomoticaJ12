@@ -1,6 +1,5 @@
 package dispositivi.domotica.altro;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import dispositivi.Dispositivo;
@@ -11,20 +10,17 @@ public class Hub extends Dispositivo {
 
     private HashMap<Integer, Dispositivo> dispositivi;
     private HashMap<Integer, Attuatore> collegamenti;
-    private ArrayList<Class> dispConosciuti;
-    private int progressivoID; //id contiene l'ultimo ID assegnato
+    private int progressivoID; //contiene l'ultimo ID assegnato ad un dispositivo
 
     public Hub(String sn, String marca, String modello) {
         super(sn, marca, modello, -1);
         this.dispositivi = new HashMap<>();
         this.collegamenti = new HashMap<>();
-        this.dispConosciuti = new ArrayList<>();
         progressivoID=-1;
     }
 
     public int associa(Dispositivo dispositivo) {
         dispositivi.put((++progressivoID), dispositivo);
-        dispConosciuti.add(dispositivo.getClass());
         return progressivoID;
     }
 
@@ -53,27 +49,28 @@ public class Hub extends Dispositivo {
         //cerco l'eventuale Attuatore collegato a questo Sensore tramite ID nella lista dei collementi
         Attuatore attuatore = collegamenti.get(sensore.getID());
 
-        if (attuatore==null) { 
+        if (attuatore==null) { //controllo se il sensore e collegato ad un attuatore
             System.err.println("HUBLOG: Nessun attuatore collegato a "+sensore );
         }
         else { //c'è un attuatore collegato
             String response="FAIL";
-            if (comando.equals("PUSH")) { //se è un pulsate uso cambiaStato()
-                response = attuatore.cambiaStato();
-            } else { //prende il comando ricevuto e lo inoltra all'attuatore
-                response = attuatore.comando(comando);
+            if (comando==null) { //non c'è un comando specifico allora HUB dice all'attuatore di cambiare stato
+                response = attuatore.nextState(); //dipende dall'attuatore se ha una metodo cambia stato
+            } else { //altrimenti prende il comando ricevuto e lo inoltra all'attuatore
+                response = attuatore.command(comando);
             }
             System.err.println("HUBLOG: Evento su "+sensore+" Comando: "+comando );
-            System.err.println("HUBLOG: Risultato evento su "+response);
+            System.err.println("HUBLOG: Risultato evento "+response);
             return response;
         }
         return "FAIL";
     }
 
-    public String listaDispositivi(Class tipo) {
+    public String listaDispositivi(Class classe) {
         StringBuilder sb = new StringBuilder();
         for (Dispositivo dispositivo : dispositivi.values()) {
-           if (tipo.isInstance(dispositivo)) sb.append(dispositivo.toString()).append("\n");
+            // se il dispositivo è della classe richiesta lo aggiunge al report
+            if (classe.isInstance(dispositivo)) sb.append(dispositivo.toString()).append("\n");
         }
         return sb.toString();
     }

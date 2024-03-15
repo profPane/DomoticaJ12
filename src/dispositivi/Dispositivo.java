@@ -18,7 +18,7 @@ public class Dispositivo {
         this.marca = marca;
         this.modello = modello;
         this.carica = 100;
-        this.stato = 0;
+        this.stato = 1; // stato undefined
     }
 
     public int getID() { return this.id; }
@@ -26,7 +26,6 @@ public class Dispositivo {
     public String getSn() { 
         return this.sn;
     }
-
 
     public void associa(Hub hub) {
         this.id = hub.associa(this);
@@ -40,7 +39,6 @@ public class Dispositivo {
         stato.append(" - Marca: "+this.marca);
         stato.append(" - Modello: "+this.modello);
         stato.append((hub != null)?" - Associato a " + hub.getSn()+" - ID: "+this.id:"Non associato");
-        //stato.append(" - Stato: " + stati[this.stato]);
         stato.append(" - Carica: " + ((carica!=-1)?carica+"%":"Alimentazione Esterna"));
         return stato.toString();
     }

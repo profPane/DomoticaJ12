@@ -12,32 +12,31 @@ public class App {
         Hub hub = new Hub("HUB01", "Domotica", "1.0");
 
         //creo quattro dispositivi e li registro
-        Pulsante pulsante1 = new Pulsante("XXa33", "Bticino", "MyHome", 100);
-        pulsante1.associa(hub);
-        Interruttore interruttore1 = new Interruttore("12345", "Gewiss", "Chorus", 100);
-        interruttore1.associa(hub);
+        Pulsante pul = new Pulsante("XXa33", "Bticino", "MyHome", 100);
+        pul.associa(hub);
+        Interruttore inter = new Interruttore("12345", "Gewiss", "Chorus", 100);
+        inter.associa(hub);
         Lamp lamp = new Lamp("54321", "Philips", "Hue", -1, 800);
         lamp.associa(hub);
-        LampDim lampDim1 = new LampDim("77t11", "IKEA", "Tradfri", -1, 1200);
-        lampDim1.associa(hub);
+        LampDim lampDimm= new LampDim("77t11", "IKEA", "Tradfri", -1, 1200);
+        lampDimm.associa(hub);
 
         // Stampa informazioni sui dispositivi prima di simulareclke
         System.out.println(hub);
 
-        hub.collega(pulsante1.getID(), lamp.getID());
-        hub.collega(interruttore1.getID(),lampDim1.getID());
+        hub.collega(pul.getID(), lamp.getID());
+        hub.collega(inter.getID(),lampDimm.getID());
 
         System.out.println(hub.collegamenti());
 
         System.err.println("LOG: Lista attuatori \n"+hub.listaDispositivi(Attuatore.class));
 
         // Simulazione di pressione del pulsante
-        pulsante1.premi();
+        pul.premi();
         // L'interruttore cambia stato
-        interruttore1.evento("ON");
-        
-        
-        lampDim1.comando("50");
+        inter.evento("ON");
+        //porto la lampada dimmerabile a livello 59
+        hub.evento(inter,"50");
 
         // Stampa informazioni sui dispositivi
         System.out.println(hub);
