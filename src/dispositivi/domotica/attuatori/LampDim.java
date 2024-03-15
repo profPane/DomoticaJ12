@@ -20,7 +20,7 @@ public class LampDim extends Lamp {
             int posStato = Arrays.binarySearch(this.stati, comando); //lo cerco tra i possibili
             if (posStato!=-1) { //se c'è lo imposto
                 this.stato=posStato;
-                System.err.println("LAMPLOG: "+this.id+" ==> "+this.stato());
+                //System.err.println("LAMPLOG: "+this.id+" ==> "+this.stato());
                 return this.stati[this.stato];
             }   
         }

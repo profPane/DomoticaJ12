@@ -21,13 +21,13 @@ public class Lamp extends Attuatore {
     public String command(String comando){ //riceve il comando se è una Stringa 
         if (comando.equals("PUSH")) {
             stato = (++stato)%stati.length;
-            System.err.println("LAMPLOG: "+this.id+" ==> "+this.stato());
+            //System.err.println("LAMPLOG: "+this.id+" ==> "+this.stato());
             return this.stato();
         }
         int posStato = Arrays.binarySearch(this.stati, comando); //lo cerco tra i possibili
         if (posStato!=-1) { //se c'è lo imposto
             this.stato=posStato;
-            System.err.println("LAMPLOG: "+this.id+" ==> "+this.stato());
+            //System.err.println("LAMPLOG: "+this.id+" ==> "+this.stato());
             return this.stato();
         }   
         //to do: controllo se stato contiene un numero tra 0 e 1 in stato e lo uso come stato

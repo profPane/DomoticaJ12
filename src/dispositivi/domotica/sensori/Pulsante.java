@@ -1,7 +1,5 @@
 package dispositivi.domotica.sensori;
 
-import java.util.Arrays;
-
 public class Pulsante extends Sensore {
     //attributi
     public Pulsante(String sn, String marca, String modello, int carica) {

@@ -2,12 +2,12 @@ package dispositivi.domotica.sensori;
 
 import java.util.Arrays;
 
-public class Interruttore extends Sensore {
+public class Switch extends Sensore {
 
     //attributi
     public String stati[] = {"OFF", "ON"}; //stati possibili
     
-    public Interruttore(String sn, String marca, String modello, int carica) {
+    public Switch(String sn, String marca, String modello, int carica) {
         super(sn, marca, modello, carica);
         this.stato = 0; //stato OFF
     }

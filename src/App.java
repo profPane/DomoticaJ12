@@ -2,7 +2,7 @@ import dispositivi.domotica.altro.Hub;
 import dispositivi.domotica.attuatori.LampDim;
 import dispositivi.domotica.attuatori.Attuatore;
 import dispositivi.domotica.attuatori.Lamp;
-import dispositivi.domotica.sensori.Interruttore;
+import dispositivi.domotica.sensori.Switch;
 import dispositivi.domotica.sensori.Pulsante;
 
 public class App {
@@ -11,11 +11,11 @@ public class App {
         //creo l'HUB
         Hub hub = new Hub("HUB01", "Domotica", "1.0");
 
-        //creo quattro dispositivi e li registro
-        Pulsante pul = new Pulsante("XXa33", "Bticino", "MyHome", 100);
-        pul.associa(hub);
-        Interruttore inter = new Interruttore("12345", "Gewiss", "Chorus", 100);
-        inter.associa(hub);
+        //creo quattro dispositivi e li registro nell'HUB
+        Pulsante pulsante = new Pulsante("XXa33", "Bticino", "MyHome", 100);
+        pulsante.associa(hub);
+        Switch interruttore = new Switch("12345", "Gewiss", "Chorus", 100);
+        interruttore.associa(hub);
         Lamp lamp = new Lamp("54321", "Philips", "Hue", -1, 800);
         lamp.associa(hub);
         LampDim lampDimm= new LampDim("77t11", "IKEA", "Tradfri", -1, 1200);
@@ -24,19 +24,19 @@ public class App {
         // Stampa informazioni sui dispositivi prima di simulareclke
         System.out.println(hub);
 
-        hub.collega(pul.getID(), lamp.getID());
-        hub.collega(inter.getID(),lampDimm.getID());
+        hub.collega(pulsante, lamp);
+        hub.collega(interruttore,lampDimm);
 
         System.out.println(hub.collegamenti());
 
-        System.err.println("LOG: Lista attuatori \n"+hub.listaDispositivi(Attuatore.class));
+        System.err.println("LOG: Lista attuatori \n"+hub.report(Attuatore.class));
 
         // Simulazione di pressione del pulsante
-        pul.premi();
+        pulsante.premi();
         // L'interruttore cambia stato
-        inter.evento("ON");
+        interruttore.evento("ON");
         //porto la lampada dimmerabile a livello 59
-        hub.evento(inter,"50");
+        hub.evento(interruttore,"50");
 
         // Stampa informazioni sui dispositivi
         System.out.println(hub);

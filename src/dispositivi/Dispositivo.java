@@ -17,7 +17,7 @@ public class Dispositivo {
         this.sn = sn;
         this.marca = marca;
         this.modello = modello;
-        this.carica = 100;
+        this.carica = carica;
         this.stato = 1; // stato undefined
     }
 
@@ -38,8 +38,7 @@ public class Dispositivo {
         stato.append("S/N: "+this.sn);
         stato.append(" - Marca: "+this.marca);
         stato.append(" - Modello: "+this.modello);
-        stato.append((hub != null)?" - Associato a " + hub.getSn()+" - ID: "+this.id:"Non associato");
-        stato.append(" - Carica: " + ((carica!=-1)?carica+"%":"Alimentazione Esterna"));
+        stato.append(" - Carica: " + ((this.carica!=-1)?this.carica+"%":"Alimentazione Esterna"));
         return stato.toString();
     }
 }
